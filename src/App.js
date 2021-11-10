@@ -1,23 +1,24 @@
-import logo from './logo.svg';
 import './App.css';
+import InputForm from "./InputForm";
+import {useState} from "react";
 
 function App() {
+  const [userInput, setUserInput] = useState({
+    straightA: 0,
+    angleA: 0,
+    straightB: 0,
+    angleB: 0,
+    straightC: 0,
+    angleC: 0,
+  });
+
+  const handleInput = (event) => {
+    setUserInput({...userInput, [event.target.name]: event.target.value});
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <InputForm handleInput={handleInput} userInput={userInput} />
     </div>
   );
 }
