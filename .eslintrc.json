@@ -1,0 +1,33 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "airbnb",
+        "prettier"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "max-len": [
+            "warn",
+            {
+                "code": 100,
+                "tabWidth": 2,
+                "comments": 100
+            }
+        ],
+        "react/destructuring-assignment": [0],
+        "react/prop-types": [0]
+    }
+}
