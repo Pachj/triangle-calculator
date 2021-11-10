@@ -1,6 +1,6 @@
+import React, { useState } from 'react';
 import './App.css';
-import InputForm from "./InputForm";
-import {useState} from "react";
+import InputForm from './InputForm';
 
 function App() {
   const [userInput, setUserInput] = useState({
@@ -13,8 +13,8 @@ function App() {
   });
 
   const handleInput = (event) => {
-    setUserInput({...userInput, [event.target.name]: event.target.value});
-  }
+    setUserInput({ ...userInput, [event.target.name]: event.target.value });
+  };
 
   return (
     <div className="App">

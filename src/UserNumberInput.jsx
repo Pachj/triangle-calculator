@@ -1,5 +1,5 @@
 import React from 'react';
-import {TextField} from "@mui/material";
+import { TextField } from '@mui/material';
 
 export default function UserNumberInput(props) {
   const labelMapping = {
@@ -9,8 +9,14 @@ export default function UserNumberInput(props) {
     angleB: 'Winkel Beta',
     straightC: 'Seite C',
     angleC: 'Winkel Gamma',
-  }
+  };
   return (
-    <TextField type={'number'} label={labelMapping[props.name]} name={props.name} onChange={props.handleInput} value={props.userInput[props.name]}/>
-  )
+    <TextField
+      type="number"
+      label={labelMapping[props.name]}
+      name={props.name}
+      onChange={props.handleInput}
+      value={props.userInput[props.name]}
+    />
+  );
 }
