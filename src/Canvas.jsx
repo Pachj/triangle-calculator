@@ -5,19 +5,19 @@ export default function Canvas(props) {
 
   const aX = 25;
   const aY = 25;
-  const bX = aX + props.sideA;
+  const bX = aX + props.sideC;
   const bY = aY;
   const cX = () => {
-    if (props.angleBeta < 90) {
-      return bX - props.sideB * Math.sin(toRadians(90 - props.angleBeta));
+    if (props.angleB < 90) {
+      return bX - props.sideA * Math.sin(toRadians(90 - props.angleB));
     }
-    return bX + props.sideB * Math.sin(-1 * toRadians(90 - props.angleBeta));
+    return bX + props.sideA * Math.sin(-1 * toRadians(90 - props.angleB));
   };
   const cY = () => {
-    if (props.angleBeta < 90) {
-      return bY + props.sideB * Math.cos(toRadians(90 - props.angleBeta));
+    if (props.angleB < 90) {
+      return bY + props.sideA * Math.cos(toRadians(90 - props.angleB));
     }
-    return bY + props.sideB * Math.cos(-1 * toRadians(90 - props.angleBeta));
+    return bY + props.sideA * Math.cos(-1 * toRadians(90 - props.angleB));
   };
 
   const canvasRef = useRef(null);
