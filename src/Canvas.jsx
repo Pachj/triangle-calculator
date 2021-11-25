@@ -29,7 +29,8 @@ export default function Canvas(props) {
     context.moveTo(aX, aY);
     context.lineTo(bX, bY);
     context.lineTo(cX(), cY());
-    context.fill();
+    context.closePath();
+    context.stroke();
   }, []);
 
   return <canvas width={10000} height={10000} ref={canvasRef} />;
