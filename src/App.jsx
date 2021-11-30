@@ -5,10 +5,10 @@ import Canvas from './Canvas';
 
 function App() {
   const [userInput, setUserInput] = useState({
-    straightA: 10,
+    straightA: 0,
     angleA: 0,
-    straightB: 7,
-    angleB: 80,
+    straightB: 0,
+    angleB: 0,
     straightC: 0,
     angleC: 0,
   });
