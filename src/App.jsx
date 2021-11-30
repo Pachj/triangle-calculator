@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import InputForm from './InputForm';
+import Canvas from './Canvas';
 
 function App() {
   const [userInput, setUserInput] = useState({
@@ -121,6 +122,7 @@ function App() {
   return (
     <div className="App">
       <InputForm handleInput={handleInput} userInput={userInput} />
+      <Canvas sideC={50} sideA={100} angleB={100} />
     </div>
   );
 }
