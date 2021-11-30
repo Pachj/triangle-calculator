@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 import InputForm from './InputForm';
 import Canvas from './Canvas';
 
 function App() {
   const [userInput, setUserInput] = useState({
-    straightA: 115,
+    straightA: 10,
     angleA: 0,
-    straightB: 0,
-    angleB: 0,
+    straightB: 7,
+    angleB: 80,
     straightC: 0,
     angleC: 0,
   });
@@ -16,7 +16,7 @@ function App() {
   const flattenValue = (input) => (input === 0 ? 0 : 1);
 
   // eslint-disable-next-line no-unused-vars
-  const [userInputArray, setUserInputArray] = useState([
+  const [userInputArrayFlattened, setUserInputArrayFlattened] = useState([
     flattenValue(userInput.straightA),
     flattenValue(userInput.angleB),
     flattenValue(userInput.straightC),
@@ -26,16 +26,358 @@ function App() {
   ]);
 
   // eslint-disable-next-line no-unused-vars
+  const [userInputArray, setUserInputArray] = useState([
+    userInput.straightA,
+    userInput.angleA,
+    userInput.straightB,
+    userInput.angleB,
+    userInput.straightC,
+    userInput.angleC,
+  ]);
+
+  const setAllValues = (valueArray) => {
+    setUserInput({
+      straightA: valueArray[0],
+      angleA: valueArray[1],
+      straightB: valueArray[2],
+      angleB: valueArray[3],
+      straightC: valueArray[4],
+      angleC: valueArray[5],
+    });
+
+    setUserInputArray(valueArray);
+  };
+
+  const allSides = () => {
+    const tmpUserInputArray = userInputArray;
+
+    const a = userInputArray[0];
+    const b = userInputArray[2];
+    const c = userInputArray[4];
+
+    tmpUserInputArray[1] = Math.acos((a * a - b * b - c * c) / (-2 * b * c)) / (Math.PI / 180);
+    tmpUserInputArray[3] = Math.acos((b * b - a * a - c * c) / (-2 * a * c)) / (Math.PI / 180);
+    tmpUserInputArray[5] = 180 - userInputArray[1] - userInputArray[3];
+
+    return tmpUserInputArray;
+  };
+
+  const twoSidesAngleAttached = () => {
+    const tmpUserInputArray = userInputArray;
+
+    const sidesWithValue = [];
+    tmpUserInputArray.forEach((item, position) => {
+      if (item > 0 && position % 2 === 0) {
+        sidesWithValue.push({ value: item, index: position });
+      }
+    });
+
+    // index angehängter Winkel immer sideOne -1 oder sideTwo +1
+    let sideOne = sidesWithValue[0];
+    let sideTwo = sidesWithValue[1];
+
+    // case if the two sides are a and b, array begins at a so side b would be sideOne even if index of it is higher
+    if (sidesWithValue[0].index === 0 && sidesWithValue[1].index === 4) {
+      // eslint-disable-next-line prefer-destructuring
+      sideOne = sidesWithValue[1];
+      // eslint-disable-next-line prefer-destructuring
+      sideTwo = sidesWithValue[0];
+    }
+
+    let angleAtSideOneIndex = (sideOne.index - 1) % tmpUserInputArray.length;
+    // only happens when sides a and c are present
+    if (angleAtSideOneIndex === -1) {
+      angleAtSideOneIndex = 5;
+    }
+
+    const angleAtSideTwoIndex = sideTwo.index + 1;
+    const angleBetweenIndex = sideOne.index + 1;
+    const sideThreeIndex = (sideTwo.index + 2) % tmpUserInputArray.length;
+
+    let angleAtSideOne = tmpUserInputArray[angleAtSideOneIndex];
+    let angleAtSideTwo = tmpUserInputArray[angleAtSideTwoIndex];
+    let angleBetween = tmpUserInputArray[angleBetweenIndex];
+    let angleAtSideOneRadians;
+    let angleAtSideTwoRadians;
+
+    if (angleAtSideOne > 0) {
+      // calculate angleAtSideTwo
+
+      angleAtSideOneRadians = (Math.PI / 180) * angleAtSideOne;
+      angleAtSideTwoRadians = Math.asin(
+        (Math.sin(angleAtSideOneRadians) / sideTwo.value) * sideOne.value,
+      );
+      angleAtSideTwo = (180 / Math.PI) * angleAtSideTwoRadians;
+    } else {
+      // calculate angle at side one
+
+      angleAtSideTwoRadians = (Math.PI / 180) * angleAtSideTwo;
+
+      const sin = Math.sin(angleAtSideTwoRadians) / sideOne.value;
+
+      angleAtSideOneRadians = Math.asin(sin * sideTwo.value);
+
+      angleAtSideOne = (180 / Math.PI) * angleAtSideOneRadians;
+    }
+    angleBetween = 180 - angleAtSideOne - angleAtSideTwo;
+
+    const angleBetweenRadians = (Math.PI / 180) * angleBetween;
+    const sideThree =
+      (sideTwo.value / Math.sin(angleAtSideOneRadians)) * Math.sin(angleBetweenRadians);
+
+    tmpUserInputArray[angleBetweenIndex] = angleBetween;
+    tmpUserInputArray[angleAtSideOneIndex] = angleAtSideOne;
+    tmpUserInputArray[angleAtSideTwoIndex] = angleAtSideTwo;
+    tmpUserInputArray[sideThreeIndex] = sideThree;
+
+    return tmpUserInputArray;
+  };
+
+  const twoSidesAngleBetween = () => {
+    const tmpUserInputArray = userInputArray;
+
+    // same as twoSidesOneAngleAttached
+    const sidesWithValue = [];
+
+    tmpUserInputArray.forEach((item, position) => {
+      if (item > 0 && position % 2 === 0) {
+        sidesWithValue.push({ value: item, index: position });
+      }
+    });
+
+    // index angehängter Winkel immer sideOne -1 oder sideTwo +1
+    let sideOne = sidesWithValue[0];
+    let sideTwo = sidesWithValue[1];
+
+    // case if the two sides are a and b, array begins at a so side b would be sideOne even if index of it is higher
+    if (sidesWithValue[0].index === 0 && sidesWithValue[1].index === 4) {
+      // eslint-disable-next-line prefer-destructuring
+      sideOne = sidesWithValue[1];
+      // eslint-disable-next-line prefer-destructuring
+      sideTwo = sidesWithValue[0];
+    }
+
+    let angleAtSideOneIndex = (sideOne.index - 1) % tmpUserInputArray.length;
+
+    // only happens when sides a and c are present
+    if (angleAtSideOneIndex === -1) {
+      angleAtSideOneIndex = 5;
+    }
+
+    const angleAtSideTwoIndex = sideTwo.index + 1;
+    const angleBetweenIndex = sideOne.index + 1;
+    const sideThreeIndex = (sideTwo.index + 2) % tmpUserInputArray.length;
+    const angleBetween = tmpUserInputArray[angleBetweenIndex];
+    const angleBetweenRadians = (Math.PI / 180) * angleBetween;
+
+    let angleAtSideOne = tmpUserInputArray[angleAtSideOneIndex];
+    let angleAtSideTwo = tmpUserInputArray[angleAtSideTwoIndex];
+
+    const cosine = Math.cos(angleBetweenRadians);
+    const sideThree = Math.sqrt(
+      // eslint-disable-next-line no-restricted-properties
+      Math.pow(sideTwo.value, 2) +
+        // eslint-disable-next-line no-restricted-properties
+        Math.pow(sideOne.value, 2) -
+        2 * sideTwo.value * sideOne.value * cosine,
+    );
+
+    // same as before
+    // you can calculate angle of side two if you have angle at side one, side one and side two
+    const angleAtSideOneRadians = Math.asin(
+      (Math.sin(angleBetweenRadians) / sideThree) * sideTwo.value,
+    );
+    angleAtSideOne = angleAtSideOneRadians / (Math.PI / 180);
+    angleAtSideTwo = 180 - angleAtSideOne - angleBetween;
+
+    tmpUserInputArray[angleBetweenIndex] = angleBetween;
+    tmpUserInputArray[angleAtSideOneIndex] = angleAtSideOne;
+    tmpUserInputArray[angleAtSideTwoIndex] = angleAtSideTwo;
+    tmpUserInputArray[sideThreeIndex] = sideThree;
+
+    return tmpUserInputArray;
+  };
+
+  const oneSideAngleAttachedAngleFloating = () => {
+    const tmpUserInputArray = userInputArray;
+
+    let side;
+    let angleAttached;
+    let angleFloating;
+
+    let angleAttachedBeforeBool = false;
+    let angleAttachedAfterBool = false;
+
+    let angleAttachedBeforeIndex;
+
+    tmpUserInputArray.forEach((item, position) => {
+      if (item > 0 && position % 2 === 0) {
+        // angle before is y
+        angleAttachedBeforeIndex = position - 1;
+        if (angleAttachedBeforeIndex === -1) {
+          angleAttachedBeforeIndex = 5;
+        }
+
+        angleAttachedBeforeBool = tmpUserInputArray[angleAttachedBeforeIndex] > 0;
+        angleAttachedAfterBool = tmpUserInputArray[position + 1] > 0;
+
+        const angleAttachedBool = angleAttachedBeforeBool || angleAttachedAfterBool;
+        const angleAttachedAndAngleFloating =
+          angleAttachedBool && tmpUserInputArray[(position + 3) % tmpUserInputArray.length] > 0;
+
+        if (angleAttachedAndAngleFloating) {
+          side = { value: item, index: position };
+          const angleFloatingIndex = (position + 3) % tmpUserInputArray.length;
+          angleFloating = {
+            value: tmpUserInputArray[angleFloatingIndex],
+            index: angleFloatingIndex,
+          };
+
+          if (angleAttachedBeforeBool) {
+            angleAttached = tmpUserInputArray[angleAttachedBeforeIndex];
+          } else {
+            angleAttached = tmpUserInputArray[position + 1];
+          }
+        }
+      }
+    });
+    let angleAfter;
+    let angleBefore;
+    // angle that is known is after the known side
+    if (angleAttachedAfterBool) {
+      angleAfter = angleAttached;
+      angleBefore = 180 - angleAfter - angleFloating.value;
+    }
+    // angle that is known is before the known side
+    else {
+      angleBefore = angleAttached;
+      angleAfter = 180 - angleBefore - angleFloating.value;
+    }
+    // we have all angles and one side
+    const angleFloatingRadians = (Math.PI / 180) * angleFloating.value;
+    const sineFloating = Math.sin(angleFloatingRadians);
+
+    const angleAfterRadians = (Math.PI / 180) * angleAfter;
+    const sineAfter = Math.sin(angleAfterRadians);
+
+    const angleBeforeRadians = (Math.PI / 180) * angleBefore;
+    const sineBefore = Math.sin(angleBeforeRadians);
+
+    const midValue = side.value / sineFloating;
+    const sideThree = midValue * sineAfter;
+    const sideThreeIndex = (angleFloating.index + 1) % tmpUserInputArray.length;
+
+    const sideTwo = midValue * sineBefore;
+    const sideTwoIndex = angleFloating.index - 1;
+
+    tmpUserInputArray[side.index + 1] = angleAfter;
+    tmpUserInputArray[angleAttachedBeforeIndex] = angleBefore;
+    tmpUserInputArray[angleFloating.index] = angleFloating.value;
+    tmpUserInputArray[sideThreeIndex] = sideThree;
+    tmpUserInputArray[sideTwoIndex] = sideTwo;
+    return tmpUserInputArray;
+  };
+
+  const sideWithTwoAttachedAngles = () => {
+    const tmpUserInputArray = userInputArray;
+
+    let side;
+    let angleBefore;
+    let angleAfter;
+
+    tmpUserInputArray.forEach((item, position) => {
+      if (item > 0 && position % 2 === 0) {
+        // angle before is y
+        let angleAttachedBeforeIndex = position - 1;
+        if (angleAttachedBeforeIndex === -1) {
+          angleAttachedBeforeIndex = 5;
+        }
+
+        const angleAttachedBeforeBool = tmpUserInputArray[angleAttachedBeforeIndex] > 0;
+        const angleAttachedAfterBool = tmpUserInputArray[position + 1] > 0;
+
+        if (angleAttachedBeforeBool && angleAttachedAfterBool) {
+          side = { value: item, index: position };
+
+          angleBefore = {
+            value: tmpUserInputArray[angleAttachedBeforeIndex],
+            index: angleAttachedBeforeIndex,
+          };
+          angleAfter = { value: tmpUserInputArray[position + 1], index: position + 1 };
+        }
+      }
+    });
+
+    const angleFloating = {
+      value: 180 - angleBefore.value - angleAfter.value,
+      index: (angleAfter.index + 2) % tmpUserInputArray.length,
+    };
+
+    // exactly the same as OneSideAngleAttachedAngleFloating
+    const angleFloatingRadians = (Math.PI / 180) * angleFloating.value;
+    const sineFloating = Math.sin(angleFloatingRadians);
+
+    const angleAfterRadians = (Math.PI / 180) * angleAfter.value;
+    const sineAfter = Math.sin(angleAfterRadians);
+
+    const angleBeforeRadians = (Math.PI / 180) * angleBefore.value;
+    const sineBefore = Math.sin(angleBeforeRadians);
+
+    const midValue = side.value / sineFloating;
+    const sideThree = midValue * sineAfter;
+    const sideThreeIndex = (angleFloating.index + 1) % tmpUserInputArray.length;
+
+    const sideTwo = midValue * sineBefore;
+    const sideTwoIndex = angleFloating.index - 1;
+
+    tmpUserInputArray[angleAfter.index] = angleAfter.value;
+    tmpUserInputArray[angleBefore.index] = angleBefore.value;
+    tmpUserInputArray[angleFloating.index] = angleFloating.value;
+    tmpUserInputArray[sideThreeIndex] = sideThree;
+    tmpUserInputArray[sideTwoIndex] = sideTwo;
+
+    return tmpUserInputArray;
+  };
+
+  const twoAngles = () => {
+    const tmpUserInputArray = userInputArray;
+
+    const anglesWithValue = [];
+
+    tmpUserInputArray.forEach((item, position) => {
+      if (item > 0 && position % 2 === 1) {
+        anglesWithValue.push({ value: item, index: position });
+      }
+    });
+
+    let angleOne = anglesWithValue[0];
+    let angleTwo = anglesWithValue[1];
+    if (anglesWithValue[0].index === 1 && anglesWithValue[1].index === 5) {
+      // eslint-disable-next-line prefer-destructuring
+      angleOne = anglesWithValue[1];
+      // eslint-disable-next-line prefer-destructuring
+      angleTwo = anglesWithValue[0];
+    }
+    tmpUserInputArray[(angleTwo.index + 2) % tmpUserInputArray.length] =
+      180 - angleOne.value - angleTwo.value;
+    // set side in the middle to 100 (preparation for sideWithTwoAttachedAngles)
+    tmpUserInputArray[angleOne.index + (1 % tmpUserInputArray.length)] = 100;
+
+    return tmpUserInputArray;
+  };
+
+  // eslint-disable-next-line no-unused-vars
   const [calcMap, setCalcMap] = useState([]);
 
   const initCalcMap = [
     {
-      calcFunction: 'allSides',
+      calcFunction: allSides,
       mappingArrays: [[1, 0, 1, 0, 1, 0]],
       matchingCount: 0,
+      minRequiredMatches: 3,
     },
     {
-      calcFunction: 'twoSidesAngleAttached',
+      calcFunction: twoSidesAngleAttached,
       mappingArrays: [
         [0, 0, 1, 0, 1, 1],
         [1, 1, 0, 0, 1, 0],
@@ -45,18 +387,20 @@ function App() {
         [0, 1, 1, 0, 1, 0],
       ],
       matchingCount: 0,
+      minRequiredMatches: 3,
     },
     {
-      calcFunction: 'twoSidesAngleBetween',
+      calcFunction: twoSidesAngleBetween,
       mappingArrays: [
         [0, 0, 1, 1, 1, 0],
         [1, 0, 0, 0, 1, 1],
         [1, 1, 1, 0, 0, 0],
       ],
       matchingCount: 0,
+      minRequiredMatches: 3,
     },
     {
-      calcFunction: 'oneSideAngleAttachedAngleFloating',
+      calcFunction: oneSideAngleAttachedAngleFloating,
       mappingArrays: [
         [0, 0, 1, 1, 0, 1],
         [0, 1, 0, 0, 1, 1],
@@ -66,24 +410,27 @@ function App() {
         [0, 1, 1, 0, 0, 1],
       ],
       matchingCount: 0,
+      minRequiredMatches: 3,
     },
     {
-      calcFunction: 'sideWithTwoAttachedAngles',
+      calcFunction: sideWithTwoAttachedAngles,
       mappingArrays: [
         [0, 0, 0, 1, 1, 1],
         [1, 1, 0, 0, 0, 1],
         [0, 1, 1, 1, 0, 0],
       ],
       matchingCount: 0,
+      minRequiredMatches: 3,
     },
     {
-      calcFunction: 'twoAngles',
+      calcFunction: twoAngles,
       mappingArrays: [
         [0, 0, 0, 1, 0, 1],
         [0, 1, 0, 0, 0, 1],
         [0, 1, 0, 1, 0, 0],
       ],
       matchingCount: 0,
+      minRequiredMatches: 2,
     },
   ];
 
@@ -98,7 +445,7 @@ function App() {
         let tmpCount = 0;
         // loop through each value in the mapping array
         actualMappingArray.forEach((actualMappingArrayValue, j) => {
-          if (userInputArray[j] === actualMappingArrayValue) {
+          if (actualMappingArrayValue === 1 && userInputArrayFlattened[j] === 1) {
             tmpCount += 1;
           }
         });
@@ -106,6 +453,14 @@ function App() {
       });
       tmpCalcMap[i].matchingCount = Math.max.apply(null, tmpCountArray);
     });
+    tmpCalcMap.sort((a, b) => b.matchingCount - a.matchingCount);
+    if (tmpCalcMap[0].minRequiredMatches <= tmpCalcMap[0].matchingCount) {
+      const result = tmpCalcMap[0].calcFunction();
+      setAllValues(result);
+    } else {
+      // TODO: error handling
+      console.log('error');
+    }
     setCalcMap(tmpCalcMap);
   };
 
@@ -113,16 +468,15 @@ function App() {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });
   };
 
-  // just for testing
-  useEffect(() => {
-    compareInputToCalcMappings();
-    console.log(calcMap);
-  }, []);
-
   return (
     <div className="App">
-      <InputForm handleInput={handleInput} userInput={userInput} />
-      <Canvas sideC={50} sideA={100} angleB={100} />
+      <InputForm
+        handleInput={handleInput}
+        userInput={userInput}
+        calculate={compareInputToCalcMappings}
+      />
+      {/* TODO Canvas richtig implementieren */}
+      <Canvas sideC={userInput.straightC} sideA={userInput.straightA} angleB={userInput.angleB} />
     </div>
   );
 }
