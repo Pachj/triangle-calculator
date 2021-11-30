@@ -1,5 +1,8 @@
 import React from 'react';
+import { Button } from '@mui/material';
 import UserNumberInput from './UserNumberInput';
+
+// TODO: block Buchstaben
 
 export default function InputForm(props) {
   return (
@@ -22,6 +25,9 @@ export default function InputForm(props) {
         userInput={props.userInput}
       />
       <UserNumberInput name="angleC" handleInput={props.handleInput} userInput={props.userInput} />
+      <Button variant="outlined" onClick={props.calculate}>
+        Calculate
+      </Button>
     </>
   );
 }
