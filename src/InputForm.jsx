@@ -6,7 +6,7 @@ import UserNumberInput from './UserNumberInput';
 
 export default function InputForm(props) {
   return (
-    <>
+    <div className="inputForm">
       <UserNumberInput
         name="straightA"
         handleInput={props.handleInput}
@@ -28,6 +28,6 @@ export default function InputForm(props) {
       <Button variant="outlined" onClick={props.calculate}>
         Calculate
       </Button>
-    </>
+    </div>
   );
 }
