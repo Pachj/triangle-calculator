@@ -470,6 +470,7 @@ function App() {
 
   return (
     <div className="App">
+      <h1>Triangle Calculator</h1>
       <InputForm
         handleInput={handleInput}
         userInput={userInput}
