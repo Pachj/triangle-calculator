@@ -1,15 +1,16 @@
-import React from 'react';
-import { TextField } from '@mui/material';
+import React from "react";
+import { TextField } from "@mui/material";
 
 export default function UserNumberInput(props) {
   const labelMapping = {
-    straightA: 'Seite A',
-    angleA: 'Winkel Alpha',
-    straightB: 'Seite B',
-    angleB: 'Winkel Beta',
-    straightC: 'Seite C',
-    angleC: 'Winkel Gamma',
+    straightA: "Seite A",
+    angleAlpha: "Winkel Alpha",
+    straightB: "Seite B",
+    angleBeta: "Winkel Beta",
+    straightC: "Seite C",
+    angleGamma: "Winkel Gamma",
   };
+
   return (
     <TextField
       type="number"
