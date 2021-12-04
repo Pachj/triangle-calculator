@@ -14,6 +14,7 @@ function App() {
   });
 
   const [showCanvas, setShowCanvas] = useState(false);
+  const [isError, setIsError] = useState(false);
 
   const allSides = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
@@ -468,6 +469,7 @@ function App() {
     } else {
       // TODO: error handling
       setShowCanvas(false);
+      setIsError(true);
       console.log("error");
     }
   };
@@ -487,6 +489,7 @@ function App() {
     });
 
     setShowCanvas(false);
+    setIsError(false);
   };
 
   return (
@@ -499,7 +502,13 @@ function App() {
         disabled={showCanvas}
         resetCalculator={resetCalculator}
       />
-      {/* TODO Canvas richtig implementieren */}
+      {isError === true ? (
+        <div className="errorContainer">
+          <p>Mit diesen Eingaben ist keine Berechnung möglich.</p>
+        </div>
+      ) : (
+        ""
+      )}
       {showCanvas === true ? (
         <Canvas sideC={50} sideA={100} angleB={100} />
       ) : (
