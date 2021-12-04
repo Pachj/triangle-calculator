@@ -12,12 +12,15 @@ export default function UserNumberInput(props) {
   };
 
   return (
-    <TextField
-      type="number"
-      label={labelMapping[props.name]}
-      name={props.name}
-      onChange={props.handleInput}
-      value={props.userInput[props.name]}
-    />
+    <div className="inputFieldContainer">
+      <TextField
+        type="number"
+        label={labelMapping[props.name]}
+        name={props.name}
+        onChange={props.handleInput}
+        value={props.userInput[props.name]}
+        disabled={props.disabled}
+      />
+    </div>
   );
 }

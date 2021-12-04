@@ -476,6 +476,19 @@ function App() {
     setUserInput({ ...userInput, [event.target.name]: event.target.value });
   };
 
+  const resetCalculator = () => {
+    setUserInput({
+      straightA: 0,
+      angleBeta: 0,
+      straightC: 0,
+      angleAlpha: 0,
+      straightB: 0,
+      angleGamma: 0,
+    });
+
+    setShowCanvas(false);
+  };
+
   return (
     <div className="App">
       <h1>Triangle Calculator</h1>
@@ -483,6 +496,8 @@ function App() {
         handleInput={handleInput}
         userInput={userInput}
         calculate={compareInputToCalcMappings}
+        disabled={showCanvas}
+        resetCalculator={resetCalculator}
       />
       {/* TODO Canvas richtig implementieren */}
       {showCanvas === true ? (

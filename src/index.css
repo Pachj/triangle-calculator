@@ -33,3 +33,17 @@ code {
   justify-content: center;
   align-items: center;
 }
+
+.inputFieldContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buttonContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

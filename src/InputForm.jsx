@@ -11,35 +11,55 @@ export default function InputForm(props) {
         name="straightA"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
       <UserNumberInput
         name="angleBeta"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
       <UserNumberInput
         name="straightC"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
       <UserNumberInput
         name="angleAlpha"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
       <UserNumberInput
         name="straightB"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
       <UserNumberInput
         name="angleGamma"
         handleInput={props.handleInput}
         userInput={props.userInput}
+        disabled={props.disabled}
       />
-      <Button variant="outlined" onClick={props.calculate}>
-        Calculate
-      </Button>
+      <div className="buttonContainer">
+        <Button
+          sx={{ margin: "10px" }}
+          variant="outlined"
+          onClick={props.calculate}
+          disabled={props.disabled}
+        >
+          Calculate
+        </Button>
+        <Button
+          sx={{ margin: "10px" }}
+          variant="outlined"
+          onClick={props.resetCalculator}
+        >
+          Reset
+        </Button>
+      </div>
     </div>
   );
 }
