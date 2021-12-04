@@ -467,10 +467,8 @@ function App() {
 
       setShowCanvas(true);
     } else {
-      // TODO: error handling
       setShowCanvas(false);
       setIsError(true);
-      console.log("error");
     }
   };
 

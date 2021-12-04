@@ -2,8 +2,6 @@ import React from "react";
 import { Button } from "@mui/material";
 import UserNumberInput from "./UserNumberInput";
 
-// TODO: block Buchstaben
-
 export default function InputForm(props) {
   return (
     <div className="inputForm">
