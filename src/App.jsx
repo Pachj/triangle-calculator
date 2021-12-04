@@ -13,42 +13,7 @@ function App() {
     angleGamma: 0,
   });
 
-  const flattenValue = (input) => (input === 0 ? 0 : 1);
-
-  // eslint-disable-next-line no-unused-vars
-  const [userInputArrayFlattened, setUserInputArrayFlattened] = useState([
-    flattenValue(userInput.straightA),
-    flattenValue(userInput.angleBeta),
-    flattenValue(userInput.straightC),
-    flattenValue(userInput.angleAlpha),
-    flattenValue(userInput.straightB),
-    flattenValue(userInput.angleGamma),
-  ]);
-
-  // eslint-disable-next-line no-unused-vars
-  const [userInputArray, setUserInputArray] = useState([
-    userInput.straightA,
-    userInput.angleBeta,
-    userInput.straightC,
-    userInput.angleAlpha,
-    userInput.straightB,
-    userInput.angleGamma,
-  ]);
-
-  const setAllValues = (valueArray) => {
-    setUserInput({
-      straightA: valueArray[0],
-      angleB: valueArray[1],
-      straightC: valueArray[2],
-      angleA: valueArray[3],
-      straightB: valueArray[4],
-      angleC: valueArray[5],
-    });
-
-    setUserInputArray(valueArray);
-  };
-
-  const allSides = () => {
+  const allSides = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     const a = userInputArray[0];
@@ -64,7 +29,7 @@ function App() {
     return tmpUserInputArray;
   };
 
-  const twoSidesAngleAttached = () => {
+  const twoSidesAngleAttached = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     const sidesWithValue = [];
@@ -136,7 +101,7 @@ function App() {
     return tmpUserInputArray;
   };
 
-  const twoSidesAngleBetween = () => {
+  const twoSidesAngleBetween = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     // same as twoSidesOneAngleAttached
@@ -201,7 +166,7 @@ function App() {
     return tmpUserInputArray;
   };
 
-  const oneSideAngleAttachedAngleFloating = () => {
+  const oneSideAngleAttachedAngleFloating = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     let side;
@@ -284,7 +249,7 @@ function App() {
     return tmpUserInputArray;
   };
 
-  const sideWithTwoAttachedAngles = () => {
+  const sideWithTwoAttachedAngles = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     let side;
@@ -349,7 +314,7 @@ function App() {
     return tmpUserInputArray;
   };
 
-  const twoAngles = () => {
+  const twoAngles = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
     const anglesWithValue = [];
@@ -375,9 +340,6 @@ function App() {
 
     return tmpUserInputArray;
   };
-
-  // eslint-disable-next-line no-unused-vars
-  const [calcMap, setCalcMap] = useState([]);
 
   const initCalcMap = [
     {
@@ -445,27 +407,30 @@ function App() {
   ];
 
   const compareInputToCalcMappings = () => {
-    setUserInputArray([
+    const flattenValue = (input) => (input === 0 ? 0 : 1);
+
+    const userInputArray = [
       userInput.straightA,
       userInput.angleBeta,
       userInput.straightC,
       userInput.angleAlpha,
       userInput.straightB,
       userInput.angleGamma,
-    ]);
-    setUserInputArrayFlattened([
+    ];
+
+    const userInputArrayFlattened = [
       flattenValue(userInput.straightA),
       flattenValue(userInput.angleBeta),
       flattenValue(userInput.straightC),
       flattenValue(userInput.angleAlpha),
       flattenValue(userInput.straightB),
       flattenValue(userInput.angleGamma),
-    ]);
+    ];
 
-    const tmpCalcMap = initCalcMap;
+    const calcMap = initCalcMap;
 
     // loop through all calc maps
-    tmpCalcMap.forEach((actualCalcMap, i) => {
+    calcMap.forEach((actualCalcMap, i) => {
       const tmpCountArray = [];
       // loop through all mapping arrays
       actualCalcMap.mappingArrays.forEach((actualMappingArray) => {
@@ -481,20 +446,25 @@ function App() {
         });
         tmpCountArray.push(tmpCount);
       });
-      tmpCalcMap[i].matchingCount = Math.max.apply(null, tmpCountArray);
+      calcMap[i].matchingCount = Math.max.apply(null, tmpCountArray);
     });
-    tmpCalcMap.sort((a, b) => b.matchingCount - a.matchingCount);
+    calcMap.sort((a, b) => b.matchingCount - a.matchingCount);
 
-    console.log(userInputArrayFlattened);
-    console.log(tmpCalcMap);
-    if (tmpCalcMap[0].minRequiredMatches <= tmpCalcMap[0].matchingCount) {
-      const result = tmpCalcMap[0].calcFunction();
-      setAllValues(result);
+    if (calcMap[0].minRequiredMatches <= calcMap[0].matchingCount) {
+      const result = calcMap[0].calcFunction(userInputArray);
+
+      setUserInput({
+        straightA: result[0],
+        angleBeta: result[1],
+        straightC: result[2],
+        angleAlpha: result[3],
+        straightB: result[4],
+        angleGamma: result[5],
+      });
     } else {
       // TODO: error handling
       console.log("error");
     }
-    setCalcMap(tmpCalcMap);
   };
 
   const handleInput = (event) => {
