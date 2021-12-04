@@ -1,6 +1,6 @@
-import React from 'react';
-import { Button } from '@mui/material';
-import UserNumberInput from './UserNumberInput';
+import React from "react";
+import { Button } from "@mui/material";
+import UserNumberInput from "./UserNumberInput";
 
 // TODO: block Buchstaben
 
@@ -12,19 +12,31 @@ export default function InputForm(props) {
         handleInput={props.handleInput}
         userInput={props.userInput}
       />
-      <UserNumberInput name="angleB" handleInput={props.handleInput} userInput={props.userInput} />
+      <UserNumberInput
+        name="angleBeta"
+        handleInput={props.handleInput}
+        userInput={props.userInput}
+      />
       <UserNumberInput
         name="straightC"
         handleInput={props.handleInput}
         userInput={props.userInput}
       />
-      <UserNumberInput name="angleA" handleInput={props.handleInput} userInput={props.userInput} />
+      <UserNumberInput
+        name="angleAlpha"
+        handleInput={props.handleInput}
+        userInput={props.userInput}
+      />
       <UserNumberInput
         name="straightB"
         handleInput={props.handleInput}
         userInput={props.userInput}
       />
-      <UserNumberInput name="angleC" handleInput={props.handleInput} userInput={props.userInput} />
+      <UserNumberInput
+        name="angleGamma"
+        handleInput={props.handleInput}
+        userInput={props.userInput}
+      />
       <Button variant="outlined" onClick={props.calculate}>
         Calculate
       </Button>

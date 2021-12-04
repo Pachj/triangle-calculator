@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
-import './App.css';
-import InputForm from './InputForm';
-import Canvas from './Canvas';
+import React, { useState } from "react";
+import "./App.css";
+import InputForm from "./InputForm";
+import Canvas from "./Canvas";
 
 function App() {
   const [userInput, setUserInput] = useState({
     straightA: 0,
-    angleA: 0,
+    angleAlpha: 0,
     straightB: 0,
-    angleB: 0,
+    angleBeta: 0,
     straightC: 0,
-    angleC: 0,
+    angleGamma: 0,
   });
 
   const flattenValue = (input) => (input === 0 ? 0 : 1);
@@ -18,21 +18,21 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [userInputArrayFlattened, setUserInputArrayFlattened] = useState([
     flattenValue(userInput.straightA),
-    flattenValue(userInput.angleB),
+    flattenValue(userInput.angleBeta),
     flattenValue(userInput.straightC),
-    flattenValue(userInput.angleA),
+    flattenValue(userInput.angleAlpha),
     flattenValue(userInput.straightB),
-    flattenValue(userInput.angleC),
+    flattenValue(userInput.angleGamma),
   ]);
 
   // eslint-disable-next-line no-unused-vars
   const [userInputArray, setUserInputArray] = useState([
     userInput.straightA,
-    userInput.angleB,
+    userInput.angleBeta,
     userInput.straightC,
-    userInput.angleA,
+    userInput.angleAlpha,
     userInput.straightB,
-    userInput.angleC,
+    userInput.angleGamma,
   ]);
 
   const setAllValues = (valueArray) => {
@@ -55,8 +55,10 @@ function App() {
     const b = userInputArray[2];
     const c = userInputArray[4];
 
-    tmpUserInputArray[1] = Math.acos((a * a - b * b - c * c) / (-2 * b * c)) / (Math.PI / 180);
-    tmpUserInputArray[3] = Math.acos((b * b - a * a - c * c) / (-2 * a * c)) / (Math.PI / 180);
+    tmpUserInputArray[1] =
+      Math.acos((a * a - b * b - c * c) / (-2 * b * c)) / (Math.PI / 180);
+    tmpUserInputArray[3] =
+      Math.acos((b * b - a * a - c * c) / (-2 * a * c)) / (Math.PI / 180);
     tmpUserInputArray[5] = 180 - userInputArray[1] - userInputArray[3];
 
     return tmpUserInputArray;
@@ -105,7 +107,7 @@ function App() {
 
       angleAtSideOneRadians = (Math.PI / 180) * angleAtSideOne;
       angleAtSideTwoRadians = Math.asin(
-        (Math.sin(angleAtSideOneRadians) / sideTwo.value) * sideOne.value,
+        (Math.sin(angleAtSideOneRadians) / sideTwo.value) * sideOne.value
       );
       angleAtSideTwo = (180 / Math.PI) * angleAtSideTwoRadians;
     } else {
@@ -123,7 +125,8 @@ function App() {
 
     const angleBetweenRadians = (Math.PI / 180) * angleBetween;
     const sideThree =
-      (sideTwo.value / Math.sin(angleAtSideOneRadians)) * Math.sin(angleBetweenRadians);
+      (sideTwo.value / Math.sin(angleAtSideOneRadians)) *
+      Math.sin(angleBetweenRadians);
 
     tmpUserInputArray[angleBetweenIndex] = angleBetween;
     tmpUserInputArray[angleAtSideOneIndex] = angleAtSideOne;
@@ -179,13 +182,13 @@ function App() {
       Math.pow(sideTwo.value, 2) +
         // eslint-disable-next-line no-restricted-properties
         Math.pow(sideOne.value, 2) -
-        2 * sideTwo.value * sideOne.value * cosine,
+        2 * sideTwo.value * sideOne.value * cosine
     );
 
     // same as before
     // you can calculate angle of side two if you have angle at side one, side one and side two
     const angleAtSideOneRadians = Math.asin(
-      (Math.sin(angleBetweenRadians) / sideThree) * sideTwo.value,
+      (Math.sin(angleBetweenRadians) / sideThree) * sideTwo.value
     );
     angleAtSideOne = angleAtSideOneRadians / (Math.PI / 180);
     angleAtSideTwo = 180 - angleAtSideOne - angleBetween;
@@ -218,12 +221,15 @@ function App() {
           angleAttachedBeforeIndex = 5;
         }
 
-        angleAttachedBeforeBool = tmpUserInputArray[angleAttachedBeforeIndex] > 0;
+        angleAttachedBeforeBool =
+          tmpUserInputArray[angleAttachedBeforeIndex] > 0;
         angleAttachedAfterBool = tmpUserInputArray[position + 1] > 0;
 
-        const angleAttachedBool = angleAttachedBeforeBool || angleAttachedAfterBool;
+        const angleAttachedBool =
+          angleAttachedBeforeBool || angleAttachedAfterBool;
         const angleAttachedAndAngleFloating =
-          angleAttachedBool && tmpUserInputArray[(position + 3) % tmpUserInputArray.length] > 0;
+          angleAttachedBool &&
+          tmpUserInputArray[(position + 3) % tmpUserInputArray.length] > 0;
 
         if (angleAttachedAndAngleFloating) {
           side = { value: item, index: position };
@@ -293,7 +299,8 @@ function App() {
           angleAttachedBeforeIndex = 5;
         }
 
-        const angleAttachedBeforeBool = tmpUserInputArray[angleAttachedBeforeIndex] > 0;
+        const angleAttachedBeforeBool =
+          tmpUserInputArray[angleAttachedBeforeIndex] > 0;
         const angleAttachedAfterBool = tmpUserInputArray[position + 1] > 0;
 
         if (angleAttachedBeforeBool && angleAttachedAfterBool) {
@@ -303,7 +310,10 @@ function App() {
             value: tmpUserInputArray[angleAttachedBeforeIndex],
             index: angleAttachedBeforeIndex,
           };
-          angleAfter = { value: tmpUserInputArray[position + 1], index: position + 1 };
+          angleAfter = {
+            value: tmpUserInputArray[position + 1],
+            index: position + 1,
+          };
         }
       }
     });
@@ -435,19 +445,22 @@ function App() {
   ];
 
   const compareInputToCalcMappings = () => {
-    setUserInputArray([userInput.straightA,
-        userInput.angleB,
-        userInput.straightC,
-        userInput.angleA,
-        userInput.straightB,
-        userInput.angleC]);
-    setUserInputArrayFlattened([flattenValue(userInput.straightA),
-        flattenValue(userInput.angleB),
-        flattenValue(userInput.straightC),
-        flattenValue(userInput.angleA),
-        flattenValue(userInput.straightB),
-        flattenValue(userInput.angleC)])
-
+    setUserInputArray([
+      userInput.straightA,
+      userInput.angleBeta,
+      userInput.straightC,
+      userInput.angleAlpha,
+      userInput.straightB,
+      userInput.angleGamma,
+    ]);
+    setUserInputArrayFlattened([
+      flattenValue(userInput.straightA),
+      flattenValue(userInput.angleBeta),
+      flattenValue(userInput.straightC),
+      flattenValue(userInput.angleAlpha),
+      flattenValue(userInput.straightB),
+      flattenValue(userInput.angleGamma),
+    ]);
 
     const tmpCalcMap = initCalcMap;
 
@@ -459,7 +472,10 @@ function App() {
         let tmpCount = 0;
         // loop through each value in the mapping array
         actualMappingArray.forEach((actualMappingArrayValue, j) => {
-          if (actualMappingArrayValue === 1 && userInputArrayFlattened[j] === 1) {
+          if (
+            actualMappingArrayValue === 1 &&
+            userInputArrayFlattened[j] === 1
+          ) {
             tmpCount += 1;
           }
         });
@@ -469,14 +485,14 @@ function App() {
     });
     tmpCalcMap.sort((a, b) => b.matchingCount - a.matchingCount);
 
-    console.log(userInputArrayFlattened)
+    console.log(userInputArrayFlattened);
     console.log(tmpCalcMap);
     if (tmpCalcMap[0].minRequiredMatches <= tmpCalcMap[0].matchingCount) {
       const result = tmpCalcMap[0].calcFunction();
       setAllValues(result);
     } else {
       // TODO: error handling
-      console.log('error');
+      console.log("error");
     }
     setCalcMap(tmpCalcMap);
   };
@@ -494,7 +510,11 @@ function App() {
         calculate={compareInputToCalcMappings}
       />
       {/* TODO Canvas richtig implementieren */}
-      <Canvas sideC={userInput.straightC} sideA={userInput.straightA} angleB={userInput.angleB} />
+      <Canvas
+        sideC={userInput.straightC}
+        sideA={userInput.straightA}
+        angleB={userInput.angleBeta}
+      />
     </div>
   );
 }
