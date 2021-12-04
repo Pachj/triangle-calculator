@@ -28,20 +28,20 @@ function App() {
   // eslint-disable-next-line no-unused-vars
   const [userInputArray, setUserInputArray] = useState([
     userInput.straightA,
-    userInput.angleA,
-    userInput.straightB,
     userInput.angleB,
     userInput.straightC,
+    userInput.angleA,
+    userInput.straightB,
     userInput.angleC,
   ]);
 
   const setAllValues = (valueArray) => {
     setUserInput({
       straightA: valueArray[0],
-      angleA: valueArray[1],
-      straightB: valueArray[2],
-      angleB: valueArray[3],
-      straightC: valueArray[4],
+      angleB: valueArray[1],
+      straightC: valueArray[2],
+      angleA: valueArray[3],
+      straightB: valueArray[4],
       angleC: valueArray[5],
     });
 
@@ -435,6 +435,20 @@ function App() {
   ];
 
   const compareInputToCalcMappings = () => {
+    setUserInputArray([userInput.straightA,
+        userInput.angleB,
+        userInput.straightC,
+        userInput.angleA,
+        userInput.straightB,
+        userInput.angleC]);
+    setUserInputArrayFlattened([flattenValue(userInput.straightA),
+        flattenValue(userInput.angleB),
+        flattenValue(userInput.straightC),
+        flattenValue(userInput.angleA),
+        flattenValue(userInput.straightB),
+        flattenValue(userInput.angleC)])
+
+
     const tmpCalcMap = initCalcMap;
 
     // loop through all calc maps
@@ -454,6 +468,9 @@ function App() {
       tmpCalcMap[i].matchingCount = Math.max.apply(null, tmpCountArray);
     });
     tmpCalcMap.sort((a, b) => b.matchingCount - a.matchingCount);
+
+    console.log(userInputArrayFlattened)
+    console.log(tmpCalcMap);
     if (tmpCalcMap[0].minRequiredMatches <= tmpCalcMap[0].matchingCount) {
       const result = tmpCalcMap[0].calcFunction();
       setAllValues(result);
