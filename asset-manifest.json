@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/triangle-calculator/static/css/main.fd1fba18.chunk.css",
+    "main.js": "/triangle-calculator/static/js/main.584f232e.chunk.js",
+    "main.js.map": "/triangle-calculator/static/js/main.584f232e.chunk.js.map",
+    "runtime-main.js": "/triangle-calculator/static/js/runtime-main.e87e1bfe.js",
+    "runtime-main.js.map": "/triangle-calculator/static/js/runtime-main.e87e1bfe.js.map",
+    "static/js/2.aa2b2ef0.chunk.js": "/triangle-calculator/static/js/2.aa2b2ef0.chunk.js",
+    "static/js/2.aa2b2ef0.chunk.js.map": "/triangle-calculator/static/js/2.aa2b2ef0.chunk.js.map",
+    "index.html": "/triangle-calculator/index.html",
+    "static/css/main.fd1fba18.chunk.css.map": "/triangle-calculator/static/css/main.fd1fba18.chunk.css.map",
+    "static/js/2.aa2b2ef0.chunk.js.LICENSE.txt": "/triangle-calculator/static/js/2.aa2b2ef0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.e87e1bfe.js",
+    "static/js/2.aa2b2ef0.chunk.js",
+    "static/css/main.fd1fba18.chunk.css",
+    "static/js/main.584f232e.chunk.js"
+  ]
+}
