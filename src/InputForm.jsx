@@ -50,14 +50,14 @@ export default function InputForm(props) {
           onClick={props.calculate}
           disabled={props.disabled}
         >
-          Calculate
+          Berechnen
         </Button>
         <Button
           sx={{ margin: "10px" }}
           variant="outlined"
           onClick={props.resetCalculator}
         >
-          Reset
+          Zurücksetzen
         </Button>
       </div>
     </div>
