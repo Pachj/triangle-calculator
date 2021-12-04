@@ -13,6 +13,8 @@ function App() {
     angleGamma: 0,
   });
 
+  const [showCanvas, setShowCanvas] = useState(false);
+
   const allSides = (userInputArray) => {
     const tmpUserInputArray = userInputArray;
 
@@ -461,8 +463,11 @@ function App() {
         straightB: result[4],
         angleGamma: result[5],
       });
+
+      setShowCanvas(true);
     } else {
       // TODO: error handling
+      setShowCanvas(false);
       console.log("error");
     }
   };
@@ -480,11 +485,11 @@ function App() {
         calculate={compareInputToCalcMappings}
       />
       {/* TODO Canvas richtig implementieren */}
-      <Canvas
-        sideC={userInput.straightC}
-        sideA={userInput.straightA}
-        angleB={userInput.angleBeta}
-      />
+      {showCanvas === true ? (
+        <Canvas sideC={50} sideA={100} angleB={100} />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

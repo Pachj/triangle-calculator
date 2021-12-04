@@ -24,3 +24,12 @@ code {
   column-gap: 10px;
   row-gap: 10px;
 }
+
+.canvasContainer {
+  margin: 20px auto auto;
+  max-width: 400px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
