@@ -334,7 +334,9 @@ function App() {
     // set side in the middle to 100 (preparation for sideWithTwoAttachedAngles)
     tmpUserInputArray[angleOne.index + (1 % tmpUserInputArray.length)] = 100;
 
-    return tmpUserInputArray;
+    const tmpUserInputArrayExample = sideWithTwoAttachedAngles(tmpUserInputArray);
+
+    return tmpUserInputArrayExample;
   };
 
   const initCalcMap = [
