@@ -443,26 +443,25 @@ function App() {
       });
       calcMap[i].matchingCount = Math.max.apply(null, tmpCountArray);
     });
+    // remove all elements where the matching count is < the required matches
+    calcMap = calcMap.filter((value) => value.matchingCount >= value.minRequiredMatches);
+
+    // sort the calcMap by matchingCount
     calcMap.sort((a, b) => b.matchingCount - a.matchingCount);
 
-    if (calcMap[0].minRequiredMatches <= calcMap[0].matchingCount) {
-      // remove all elements where the matching count is < the required matches
-      calcMap = calcMap.filter((value) => value.matchingCount >= value.minRequiredMatches);
+    if (calcMap.length > 0) {
+      const result = calcMap[0].calcFunction(userInputArray);
 
-      if (calcMap.length > 0) {
-        const result = calcMap[0].calcFunction(userInputArray);
+      setUserInput({
+        straightA: result[0],
+        angleBeta: result[1],
+        straightC: result[2],
+        angleAlpha: result[3],
+        straightB: result[4],
+        angleGamma: result[5],
+      });
 
-        setUserInput({
-          straightA: result[0],
-          angleBeta: result[1],
-          straightC: result[2],
-          angleAlpha: result[3],
-          straightB: result[4],
-          angleGamma: result[5],
-        });
-
-        setShowCanvas(true);
-      }
+      setShowCanvas(true);
     } else {
       setShowCanvas(false);
       setIsError(true);
