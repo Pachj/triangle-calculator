@@ -503,7 +503,7 @@ function App() {
       ) : (
         ''
       )}
-      {showCanvas === true ? <Canvas sideC={50} sideA={100} angleB={100} /> : ''}
+      {showCanvas === true ? <Canvas sideC={userInput.straightC} sideA={userInput.straightA} angleB={userInput.angleBeta} /> : ''}
     </div>
   );
 }
